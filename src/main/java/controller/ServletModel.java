@@ -15,7 +15,8 @@ import java.util.Optional;
 
 @WebServlet("/")
 public class ServletModel extends HttpServlet {
-    Repository repository = new Repository();
+
+    private Repository repository = Repository.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
