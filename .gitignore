@@ -1,0 +1,6 @@
+# Project stuff
+/*.iml
+**/*.iml
+target/**
+.idea/** 
+.idea/workspace.xml
