@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,17 @@ public class RestController extends HttpServlet {
 
     private Repository repository = Repository.getInstance();
     private ObjectMapper mapper = new ObjectMapper();
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        switch (req.getPathInfo()){
+            case "/save" :
+                save(req, resp);
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -54,5 +66,22 @@ public class RestController extends HttpServlet {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void save(HttpServletRequest req, HttpServletResponse resp){
+        try {
+            Model model = mapper.readValue(req.getReader(), Model.class);
+            model.setDate(new Date());
+            repository.add(model);
+        } catch (IOException e) {
+            e.printStackTrace();
+            //500 - HttpCode Internal Server Error
+            resp.setStatus(500);
+            try {
+                resp.getWriter().print(e.getLocalizedMessage());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }

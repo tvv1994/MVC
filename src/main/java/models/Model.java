@@ -11,6 +11,9 @@ public class Model {
     private List<String> listTag;
     private Date date;
 
+    public Model() {
+    }
+
     public Model(String name, int number, List<String> listTag) {
         this.name = name;
         this.number = number;
@@ -44,5 +47,9 @@ public class Model {
 
     public List<String> getListTag() {
         return listTag;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
