@@ -20,7 +20,7 @@ public class Repository {
 
     private static final String DB_DRIVER = "org.h2.Driver";
     public static final String DB_URL = "jdbc:h2:" + Repository.class.getClassLoader().getResource("stockExchange").getPath();
-    public static final String CREATE_TABLE = "create table IF NOT EXISTS SOMETHING (Id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50), number INT, tags VARCHAR(150), date DATE);";
+    public static final String CREATE_TABLE = "create table IF NOT EXISTS SOMETHING (Id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50) NOT NULL, number INT, tags VARCHAR(150), date DATE);";
     private static final String INSERT_SQL = "INSERT INTO SOMETHING (name, number, tags, date) values (?,?,?,?)";
     private static final String DELETE_BY_ID_SQL = "DELETE FROM SOMETHING WHERE id like ?";
     private static final String SELECT_ALL_SQL = "SELECT * FROM SOMETHING";

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -40,8 +41,14 @@ public class RestController extends HttpServlet {
             case "/getById" :
                 getById(req, resp);
                 break;
-            default:
+            case "/save":
+                saveData(req, resp);
                 break;
+            case "/delete" :
+                delete(req, resp);
+                break;
+            default:
+                resp.getWriter().print("Not found.");
         }
     }
 
@@ -67,7 +74,6 @@ public class RestController extends HttpServlet {
             }
         });
     }
-
     private void save(HttpServletRequest req, HttpServletResponse resp){
         try {
             Model model = mapper.readValue(req.getReader(), Model.class);
@@ -82,6 +88,39 @@ public class RestController extends HttpServlet {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    //localhost:8888/rest/save?name=name&number=12&listTag=java
+    private void saveData(HttpServletRequest req, HttpServletResponse resp){
+        try {
+            String name = req.getParameter("name");
+            int number = Integer.valueOf(req.getParameter("number"));
+            String[] listTag = req.getParameterValues("listTag");
+            if(name!=null) {
+                Model model = new Model(name, number, Arrays.asList(listTag));
+                repository.add(model);
+                resp.getWriter().print("Done.");
+            } else resp.getWriter().print("Not correct data.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            //500 - HttpCode Internal Server Error
+            resp.setStatus(500);
+            try {
+                resp.getWriter().print(e.getLocalizedMessage());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    //localhost:8888/rest/delete?id=1
+    private void delete(HttpServletRequest req, HttpServletResponse resp){
+        int id= Integer.valueOf(req.getParameter("id"));
+        repository.delete(id);
+        try {
+            resp.getWriter().print("Done");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

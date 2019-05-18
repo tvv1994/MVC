@@ -20,9 +20,7 @@ public class ServletModel extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //req.setAttribute("list", model);
-        //RequestDispatcher dispatcher = req.getRequestDispatcher("/showUsers.jsp");
-        //dispatcher.forward(req, resp);
+                doDelete(req, resp);
     }
 
     @Override
@@ -38,6 +36,7 @@ public class ServletModel extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
+        resp.getWriter().print(id);
         repository.delete(id);
         resp.sendRedirect("/");
     }
